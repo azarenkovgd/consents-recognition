@@ -71,7 +71,7 @@ def preprocess_image(image: np.ndarray) -> np.ndarray:
 
 
 def align_images(template, image_to_align: np.ndarray, max_features: int, keep_percent: float,
-                 image_orb_features: tuple = (None, None), template_orb_features: tuple = (None, None)) -> np.ndarray:
+                 image_orb_features=None, template_orb_features=None) -> np.ndarray:
     """Выровнять image_to_align, используя template как ориентир.
 
     :param template: изображение ориентир.
@@ -86,10 +86,10 @@ def align_images(template, image_to_align: np.ndarray, max_features: int, keep_p
     # изменение размера изображения для устранения слишком высокого качества присланной формы.
     image_to_align = imutils.resize(preprocess_image(image_to_align), template.shape[1])
 
-    if not all(template_orb_features):  # Если template_orb_features равен (None, None)
+    if not template_orb_features:  # Если template_orb_features пуст.
         template_orb_features = create_orb_features(template, max_features)
 
-    if not all(image_orb_features):  # Если image_orb_features равен (None, None)
+    if not image_orb_features:  # Если image_orb_features пуст.
         image_orb_features = create_orb_features(image_to_align, max_features)
 
     pts1, pts2 = match_images(image_orb_features, template_orb_features, keep_percent)
