@@ -49,7 +49,7 @@ def load_image(path: str) -> np.ndarray:
     :return: изображение.
     :raises Exception: если файла не существует.
     """
-    if os.path.exists(path):
+    if not os.path.exists(path):
         raise Exception(f'Файла {path} не существует.')
 
     if os.path.splitext(path)[-1] == '.pdf':
