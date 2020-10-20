@@ -84,8 +84,7 @@ def load_fields(path: str) -> list:
     :param path: путь к файлу.
     :return: обработанные поля.
     """
-    with open(path, 'r', encoding='utf-8') as read_file:
-        data = json.load(read_file)
+    data = load_json(path)
 
     output = []
     for key in data:
@@ -107,3 +106,25 @@ def load_template_values(number: int, max_features: int, data_folder: str = 'dat
     fields = load_fields(f'{data_folder}/sogl{number}_fields.json')
 
     return template, template_orb_features, fields
+
+
+def save_json(obj, path: str):
+    """Сохраняет файл в формате json
+
+    :param obj: объект для сохранения.
+    :param path: путь для сохранения.
+    """
+    with open(path, 'w', encoding='utf-8') as f:
+        json.dump(obj, f, ensure_ascii=False)
+
+
+def load_json(path: str):
+    """Загружает объект из файла формата json.
+
+    :param path: путь к файлу.
+    :return: загруженный объект.
+    """
+    with open(path, 'r', encoding='utf-8') as read_file:
+        data = json.load(read_file)
+
+    return data
