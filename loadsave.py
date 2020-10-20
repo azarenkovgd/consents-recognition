@@ -5,7 +5,7 @@ from typing import Tuple
 
 import cv2
 import numpy as np
-
+from pdf2image import convert_from_path
 
 def prepare_orb_features_to_save(orb_features: tuple) -> tuple:
     """Подготавливает к сохранению orb_features.
@@ -49,11 +49,17 @@ def load_image(path: str) -> np.ndarray:
     :return: изображение.
     :raises Exception: если файла не существует.
     """
-    im = cv2.imread(path)
     if os.path.exists(path):
-        return im
-    else:
         raise Exception(f'Файла {path} не существует.')
+
+    if os.path.splitext(path)[-1] == '.pdf':
+        page = convert_from_path(path, 500)
+        open_cv_image = np.array(page[0])
+        open_cv_image = open_cv_image[:, :, ::-1].copy()
+        return open_cv_image
+    else:
+        im = cv2.imread(path)
+        return im
 
 
 def save_pickle(obj, path: str):
