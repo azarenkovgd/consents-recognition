@@ -7,6 +7,7 @@ import cv2
 import numpy as np
 from pdf2image import convert_from_path
 
+
 def prepare_orb_features_to_save(orb_features: tuple) -> tuple:
     """Подготавливает к сохранению orb_features.
 
