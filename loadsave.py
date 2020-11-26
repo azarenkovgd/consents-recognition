@@ -2,10 +2,19 @@ import pickle
 import json
 import os
 from typing import Tuple
+import csv
 
 import cv2
 import numpy as np
 from pdf2image import convert_from_path
+
+
+def save_csv(data, path, headers):
+    data = [headers] + data
+    with open(path, "w", newline='') as csv_file:
+        writer = csv.writer(csv_file, delimiter=',')
+        for line in data:
+            writer.writerow(line)
 
 
 def prepare_orb_features_to_save(orb_features: tuple) -> tuple:
