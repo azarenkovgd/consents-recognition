@@ -1,6 +1,6 @@
 {
     "message if filled": "ok",
-    "max_features": 3000,
+    "max_features": 4000,
     "keep_percent": 0.4,
     "similarity_threshold": 0.3,
     "fields_threshold": 4000,

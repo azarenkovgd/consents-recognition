@@ -8,6 +8,8 @@ import cv2
 import numpy as np
 from pdf2image import convert_from_path
 
+import alignment
+
 
 def save_csv(data, path, headers):
     data = [headers] + data
@@ -118,7 +120,7 @@ def load_template_values(number: int, max_features: int, data_folder: str = 'dat
     :return: данные об исходном согласии - файл, orb фичи, поля.
     """
     template = load_image(f'{data_folder}/sogl{number}_image.jpg')
-    template_orb_features = load_orb_features(f'{data_folder}/sogl{number}_orb.pickle', max_features)
+    template_orb_features = alignment.create_orb_features(template, max_features)
     fields = load_fields(f'{data_folder}/sogl{number}_fields.json')
 
     return template, template_orb_features, fields
