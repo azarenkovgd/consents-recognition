@@ -24,7 +24,6 @@ def on_one_file(template, template_orb_features, fields: list, path: str, parame
         is_filled, debug_image, score, percent_filled = recognition_parameters
 
         end_time = round(time.time() - start_time, 5)
-        cv2.imwrite('debug/' + path.split('/')[-1], debug_image)
 
         output = [path, is_filled, score, percent_filled, end_time]
     except:
