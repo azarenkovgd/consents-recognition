@@ -1,15 +1,17 @@
 {
     "max_features": 4000,
     "keep_percent": 0.4,
-    "similarity_threshold": 0.3,
+    "similarity_threshold": 0.15,
 
-    "fields_threshold": 4000,
-    "percent_filled_threshold": 0.8,
+    "fields_threshold": 5000,
+    "percent_filled_threshold": 0.3,
 
     "debug_mode": 0,
     "debug_folder": "debug",
 
-    "path_to_files": "files",
+    "path_to_files": "/files",
     "sogl_folder": "sogl_folder",
-    "sogl_number": 3
+    "sogl_number": 3,
+
+    "logs_folder": "logs"
 }

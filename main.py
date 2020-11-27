@@ -12,6 +12,7 @@ def main():
     else:
         conrec.load_image(conrec.path_to_files)
         conrec.create_orb_for_image()
+        conrec.on_one_file()
 
 
 if __name__ == '__main__':
