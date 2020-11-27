@@ -1,11 +1,15 @@
 {
-    "message if filled": "ok",
     "max_features": 4000,
     "keep_percent": 0.4,
     "similarity_threshold": 0.3,
+
     "fields_threshold": 4000,
     "percent_filled_threshold": 0.8,
+
     "debug_mode": 0,
     "debug_folder": "debug",
-    "sogl_folder": "/base_data"
+
+    "path_to_files": "files",
+    "sogl_folder": "sogl_folder",
+    "sogl_number": 3
 }
