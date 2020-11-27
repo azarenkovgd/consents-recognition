@@ -2,11 +2,7 @@ import argparse
 import os
 import time
 
-import cv2
-
-import alignment
-import recognition
-import loadsave
+import loadsave, alignment, recognition
 
 
 def on_one_file(template, template_orb_features, fields: list, path: str, parameters: dict):

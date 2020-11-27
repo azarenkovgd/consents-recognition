@@ -7,5 +7,5 @@
     "percent_filled_threshold": 0.8,
     "debug_mode": 0,
     "debug_folder": "debug",
-    "sogl_folder": "data"
+    "sogl_folder": "/base_data"
 }
