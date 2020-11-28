@@ -32,7 +32,7 @@ def load_image(path: str) -> np.ndarray:
     if os.path.getsize(path) > 10000000:
         raise Exception(f'Файл {path} слишком большой')
 
-    if os.path.getsize(path) < 50000:
+    if os.path.getsize(path) < 30000:
         raise Exception(f'Файл {path} слишком маленький')
 
     if os.path.splitext(path)[-1] == '.pdf':

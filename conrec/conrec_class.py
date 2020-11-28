@@ -104,6 +104,8 @@ class ConRec:
                 self.on_error(time_start, file_name, e)
 
     def find_values(self):
+        utils.write_row_csv(['path', 'error'], self.error_logs_dir, mode="w")
+
         rel_paths = os.listdir(self.path_to_files)
         random.shuffle(rel_paths)
 
@@ -119,7 +121,6 @@ class ConRec:
 
         for rel_path in rel_paths:
             abs_path = os.path.join(self.path_to_files, rel_path)
-            time_start = time.time()
 
             try:
                 self.image = image_class.Image(self, abs_path)
@@ -144,5 +145,6 @@ class ConRec:
 
                 utils.save_pickle(output, 'logs/output.pickle')
 
-            except Exception as e:
-                self.on_error(time_start, rel_path, e)
+            except Exception as exception:
+                error_data = [rel_path, str(exception)]
+                utils.write_row_csv(error_data, self.error_logs_dir)
