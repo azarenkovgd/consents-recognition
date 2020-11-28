@@ -1,5 +1,6 @@
 import time
 import os
+import random
 
 import cv2
 
@@ -73,7 +74,8 @@ class ConRec:
         utils.write_row_csv(log_data, self.logs_dir)
 
         if self.debug_mode == 1:
-            cv2.imwrite(os.path.join(self.debug_folder, file_name), self.image.debug_aligned)
+            debug_file_name = file_name.split('.')[0] + '.jpg'
+            cv2.imwrite(os.path.join(self.debug_folder, debug_file_name), self.image.debug_aligned)
 
     def on_error(self, time_start, file_name, exception):
         error_data = [file_name, str(exception)]
@@ -100,3 +102,39 @@ class ConRec:
 
             except Exception as e:
                 self.on_error(time_start, file_name, e)
+
+    def find_values(self):
+        rel_paths = os.listdir(self.path_to_files)
+        random.shuffle(rel_paths)
+
+        max_features = [x for x in range(1000, 10000, 1000)]
+        keep_percents = [x/10 for x in range(1, 11, 1)]
+
+        output = {}
+
+        self.template = template_class.Template(self)
+        self.template.load_template_values()
+
+        for rel_path in rel_paths:
+            abs_path = os.path.join(self.path_to_files, rel_path)
+
+            self.image = image_class.Image(self, abs_path)
+            self.image.load_image()
+
+            for max_feature in max_features:
+                self.max_features = max_feature
+
+                self.template.calc_orb()
+                self.image.create_orb_for_image()
+
+                for keep_percent in keep_percents:
+                    self.keep_percent = keep_percent
+
+                    self.image.align_image()
+                    self.image.evaluate_aligned_image()
+
+                    output[(max_feature, keep_percent)] = output.setdefault((max_feature, keep_percent), [])
+                    output[(max_feature, keep_percent)].append(self.image.similarity_score)
+
+                utils.save_pickle(output, 'logs/output.pickle')
+                self.image.cached_matches = None

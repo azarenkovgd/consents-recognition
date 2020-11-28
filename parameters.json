@@ -4,14 +4,14 @@
     "similarity_threshold": 0.14,
 
     "fields_threshold": 5000,
-    "percent_filled_threshold": 0.3,
+    "percent_filled_threshold": 0.5,
 
-    "debug_mode": 0,
+    "debug_mode": 1,
     "debug_folder": "debug",
 
     "path_to_files": "/files",
     "sogl_folder": "sogl_folder",
-    "sogl_number": 2,
+    "sogl_number": 3,
 
     "logs_folder": "logs"
 }
