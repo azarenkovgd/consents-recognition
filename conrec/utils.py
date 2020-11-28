@@ -3,12 +3,23 @@ import json
 import csv
 import os
 from typing import Tuple
+import hashlib
 
 import cv2
 import numpy as np
 from pdf2image import convert_from_path
 
 from conrec import orbutils
+
+
+def calc_sha256(filename):
+    sha256_hash = hashlib.sha256()
+
+    with open(filename, "rb") as f:
+        for byte_block in iter(lambda: f.read(4096), b""):
+            sha256_hash.update(byte_block)
+
+    return sha256_hash.hexdigest()
 
 
 def save_csv(data, path, headers):
@@ -63,7 +74,7 @@ def load_fields(path: str) -> list:
 
 def save_json(obj, path: str):
     with open(path, 'w', encoding='utf-8') as f:
-        json.dump(obj, f, ensure_ascii=False)
+        json.dump(obj, f, ensure_ascii=False, indent=4)
 
 
 def load_json(path: str):

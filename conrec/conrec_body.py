@@ -40,12 +40,17 @@ class ConRec:
         self.estimated_values = []
         self.debug_aligned = None
 
+        self.hashes = {}
+
     def load_image(self, path_to_image):
         image_to_align = utils.load_image(path_to_image)
         preprocessed_image = utils.preprocess_image(image_to_align)
         preprocessed_image = imutils.resize(preprocessed_image, self.template.shape[1])
 
         self.image_to_align = preprocessed_image
+
+        sha256 = utils.calc_sha256(path_to_image)
+        self.hashes[sha256] = self.hashes.setdefault(sha256, 0) + 1
 
     def create_orb_for_image(self):
         self.image_orb_features = orbutils.create_orb_features(self.image_to_align, self.max_features)
@@ -94,6 +99,9 @@ class ConRec:
 
                 if self.debug_mode == 1:
                     cv2.imwrite(os.path.join(self.debug_folder, file_name), self.debug_aligned)
+
+                hashes = dict(sorted(self.hashes.items(), key=lambda x: x[1], reverse=True)[:25])
+                utils.save_json(hashes, 'logs/hashes')
 
             except Exception as e:
                 data.append(str(e))
