@@ -107,6 +107,8 @@ class ConRec:
         rel_paths = os.listdir(self.path_to_files)
         random.shuffle(rel_paths)
 
+        utils.save_pickle(rel_paths, 'logs/paths_random.pickle')
+
         max_features = [x for x in range(1000, 10000, 1000)]
         keep_percents = [x/10 for x in range(1, 11, 1)]
 
@@ -117,24 +119,30 @@ class ConRec:
 
         for rel_path in rel_paths:
             abs_path = os.path.join(self.path_to_files, rel_path)
+            time_start = time.time()
 
-            self.image = image_class.Image(self, abs_path)
-            self.image.load_image()
+            try:
+                self.image = image_class.Image(self, abs_path)
+                self.image.load_image()
 
-            for max_feature in max_features:
-                self.max_features = max_feature
+                for max_feature in max_features:
+                    self.max_features = max_feature
 
-                self.template.calc_orb()
-                self.image.create_orb_for_image()
+                    self.template.calc_orb()
+                    self.image.create_orb_for_image()
 
-                for keep_percent in keep_percents:
-                    self.keep_percent = keep_percent
+                    for keep_percent in keep_percents:
+                        self.keep_percent = keep_percent
 
-                    self.image.align_image()
-                    self.image.evaluate_aligned_image()
+                        self.image.align_image()
+                        self.image.evaluate_aligned_image()
 
-                    output[(max_feature, keep_percent)] = output.setdefault((max_feature, keep_percent), [])
-                    output[(max_feature, keep_percent)].append(self.image.similarity_score)
+                        output[(max_feature, keep_percent)] = output.setdefault((max_feature, keep_percent), [])
+                        output[(max_feature, keep_percent)].append(self.image.similarity_score)
+
+                    self.image.cached_matches = None
 
                 utils.save_pickle(output, 'logs/output.pickle')
-                self.image.cached_matches = None
+
+            except Exception as e:
+                self.on_error(time_start, rel_path, e)
