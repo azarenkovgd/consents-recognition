@@ -1,7 +1,7 @@
 {
     "max_features": 4000,
     "keep_percent": 0.4,
-    "similarity_threshold": 0.15,
+    "similarity_threshold": 0.14,
 
     "fields_threshold": 5000,
     "percent_filled_threshold": 0.3,

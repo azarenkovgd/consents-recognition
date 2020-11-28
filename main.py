@@ -1,18 +1,11 @@
-import os
-from conrec import utils, conrec_body
+from conrec import utils, conrec_class
 
 
 def main():
     parameters = utils.load_json('parameters.json')  # загружает параметры
 
-    conrec = conrec_body.ConRec(parameters)
-
-    if not os.path.isfile(conrec.path_to_files):
-        conrec.on_multiple_files()
-    else:
-        conrec.load_image(conrec.path_to_files)
-        conrec.create_orb_for_image()
-        conrec.on_one_file()
+    conrec = conrec_class.ConRec(parameters)
+    conrec.on_multiple_files()
 
 
 if __name__ == '__main__':

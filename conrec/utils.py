@@ -2,14 +2,11 @@ import pickle
 import json
 import csv
 import os
-from typing import Tuple
 import hashlib
 
 import cv2
 import numpy as np
 from pdf2image import convert_from_path
-
-from conrec import orbutils
 
 
 def calc_sha256(filename):
@@ -82,16 +79,6 @@ def load_json(path: str):
         data = json.load(read_file)
 
     return data
-
-
-def load_template_values(number: int, max_features: int, data_folder: str = 'data') -> Tuple[np.ndarray, tuple, list]:
-    template = load_image(f'{data_folder}/sogl{number}_image.jpg')
-    preprocessed_template = preprocess_image(template)
-
-    template_orb_features = orbutils.create_orb_features(template, max_features)
-    fields = load_fields(f'{data_folder}/sogl{number}_fields.json')
-
-    return preprocessed_template, template_orb_features, fields
 
 
 def preprocess_image(image: np.ndarray) -> np.ndarray:

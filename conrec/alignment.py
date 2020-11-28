@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-def match_images(matches, image_orb_features, template_orb_features, keep_percent):
+def match_images(matches, keep_percent, image_orb_features, template_orb_features):
     (kps1, descs1) = image_orb_features
     (kps2, descs2) = template_orb_features
 
