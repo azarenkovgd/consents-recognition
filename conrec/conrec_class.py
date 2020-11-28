@@ -64,29 +64,33 @@ class ConRec:
 
         self.on_one_image(abs_path_to_image)
 
-        data = [abs_path_to_image, self.image.similarity_score, self.image.percent_filled, self.image.is_correct,
-                self.image.sha256_image]
+        log_data = [abs_path_to_image, self.image.similarity_score, self.image.percent_filled, self.image.is_correct,
+                    self.image.sha256_image]
 
         final_time = round(time.time() - time_start, 3)
-        data.append(final_time)
+        log_data.append(final_time)
 
-        self.logs.append(data)
-        utils.save_csv(self.logs, self.logs_dir, self.headers_for_logs_csv)
+        utils.write_row_csv(log_data, self.logs_dir)
 
         if self.debug_mode == 1:
             cv2.imwrite(os.path.join(self.debug_folder, file_name), self.image.debug_aligned)
 
     def on_error(self, time_start, file_name, exception):
-        data = [file_name, str(exception)]
+        error_data = [file_name, str(exception)]
 
         final_time = round(time.time() - time_start, 3)
-        data.append(final_time)
+        error_data.append(final_time)
 
-        self.errors.append(data)
-        utils.save_csv(self.errors, self.error_logs_dir, self.headers_for_error_csv)
+        log_data = [file_name, 'score', 'percent_filled', False, 'sha256', final_time]
+
+        utils.write_row_csv(error_data, self.error_logs_dir)
+        utils.write_row_csv(log_data, self.logs_dir)
 
     def on_multiple_files(self):
         self.on_one_template()
+
+        utils.write_row_csv(self.headers_for_logs_csv, self.logs_dir, mode="w")
+        utils.write_row_csv(self.headers_for_error_csv, self.error_logs_dir, mode="w")
 
         for file_name in os.listdir(self.path_to_files):
             time_start = time.time()

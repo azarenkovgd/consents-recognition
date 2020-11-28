@@ -19,12 +19,10 @@ def calc_sha256(filename):
     return sha256_hash.hexdigest()
 
 
-def save_csv(data, path, headers):
-    data = [headers] + data
-    with open(path, "w", newline='') as csv_file:
-        writer = csv.writer(csv_file, delimiter=',')
-        for line in data:
-            writer.writerow(line)
+def write_row_csv(data, path, mode="a+", delimiter=',', newline=''):
+    with open(path, mode=mode, newline=newline) as csv_file:
+        csv_writer = csv.writer(csv_file, delimiter=delimiter)
+        csv_writer.writerow(data)
 
 
 def load_image(path: str) -> np.ndarray:
@@ -34,7 +32,7 @@ def load_image(path: str) -> np.ndarray:
     if os.path.getsize(path) > 10000000:
         raise Exception(f'Файл {path} слишком большой')
 
-    if os.path.getsize(path) < 40000:
+    if os.path.getsize(path) < 50000:
         raise Exception(f'Файл {path} слишком маленький')
 
     if os.path.splitext(path)[-1] == '.pdf':
