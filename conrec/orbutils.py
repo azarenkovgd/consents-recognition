@@ -4,7 +4,7 @@ import numpy as np
 from conrec import utils
 
 
-def prepare_orb_features_to_save(orb_features: tuple) -> tuple:
+def prepare_orb_features_to_save(orb_features):
     serialized_keypoints = []
     for point in orb_features[0]:
         temp = (point.pt, point.size, point.angle, point.response, point.octave, point.class_id)
@@ -13,7 +13,7 @@ def prepare_orb_features_to_save(orb_features: tuple) -> tuple:
     return serialized_keypoints, orb_features[1]
 
 
-def load_orb_features(path: str, max_features: int) -> tuple:
+def load_orb_features(path, max_features):
     orb_features = utils.load_pickle(path)[max_features]
 
     keypoints = []
@@ -25,7 +25,7 @@ def load_orb_features(path: str, max_features: int) -> tuple:
     return keypoints, orb_features[1]
 
 
-def create_orb_features(image: np.ndarray, max_features: int) -> tuple:
+def create_orb_features(image: np.ndarray, max_features):
     orb = cv2.ORB_create(max_features)
     image_orb_features = orb.detectAndCompute(image, None)
 

@@ -38,7 +38,7 @@ class ConRec:
 
     def check_correctness_image(self):
         if (self.image.similarity_score > self.similarity_threshold and
-            self.image.percent_filled > self.percent_filled_threshold and
+                self.image.percent_filled > self.percent_filled_threshold and
                 self.image.sha256_image not in self.template.stop_sha256):
             self.image.is_correct = True
         else:
@@ -111,10 +111,10 @@ class ConRec:
 
         utils.save_pickle(rel_paths, 'logs/paths_random.pickle')
 
-        max_features = [x for x in range(1000, 10000, 1000)]
-        keep_percents = [x/10 for x in range(1, 11, 1)]
+        max_features = [x for x in range(1000, 12000, 1000)]
+        keep_percents = [x / 10 for x in range(1, 11, 1)]
 
-        output = {}
+        output = {'score': {}, 'fill': {}}
 
         self.template = template_class.Template(self)
         self.template.load_template_values()
@@ -138,8 +138,13 @@ class ConRec:
                         self.image.align_image()
                         self.image.evaluate_aligned_image()
 
-                        output[(max_feature, keep_percent)] = output.setdefault((max_feature, keep_percent), [])
-                        output[(max_feature, keep_percent)].append(self.image.similarity_score)
+                        pair = (max_feature, keep_percent)
+                        if pair not in output['score']:
+                            output['score'][pair] = []
+                            output['fill'][pair] = []
+
+                        output['score'][pair].append(self.image.similarity_score)
+                        output['fill'][pair].append(self.image.percent_filled)
 
                     self.image.cached_matches = None
 
