@@ -30,7 +30,7 @@ def load_image(path: str) -> np.ndarray:
         raise Exception(f'Файл {path} слишком маленький')
 
     if os.path.splitext(path)[-1] == '.pdf':
-        page = convert_from_path(path, 500)
+        page = convert_from_path(path, dpi=500, single_file=True)
         open_cv_image = np.array(page[0])
         open_cv_image = open_cv_image[:, :, ::-1].copy()
         return open_cv_image
@@ -87,4 +87,3 @@ def preprocess_image(image: np.ndarray) -> np.ndarray:
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
     return image
-

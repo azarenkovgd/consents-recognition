@@ -30,7 +30,7 @@ class ConRec:
         self.headers_for_logs_csv = ['path', 'score', 'percent_filled', 'is_correct', 'final_time']
         self.logs_dir = f'{parameters["logs_folder"]}/logs.csv'
         self.error_logs_dir = f'{parameters["logs_folder"]}/errors.csv'
-        self.headers_for_error_csv = ['error_message', 'final_time']
+        self.headers_for_error_csv = ['path', 'error_message', 'final_time']
 
         # при переборе наилучшей конфигурации можно будет сокращать время перебора, кешируя найденные значения
         self.cached_matches = None
