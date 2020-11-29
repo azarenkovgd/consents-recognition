@@ -1,10 +1,10 @@
 {
-    "max_features": 4000,
-    "keep_percent": 0.4,
-    "similarity_threshold": 0.14,
+    "max_features": 11000,
+    "keep_percent": 0.9,
 
+    "similarity_threshold": 0.2,
     "fields_threshold": 5000,
-    "percent_filled_threshold": 0.5,
+    "percent_filled_threshold": 0.7,
 
     "debug_mode": 1,
     "debug_folder": "debug",
