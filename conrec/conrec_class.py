@@ -88,13 +88,18 @@ class ConRec:
         utils.write_row_csv(error_data, self.error_logs_dir)
         utils.write_row_csv(log_data, self.logs_dir)
 
-    def on_multiple_files(self):
+    def on_multiple_files(self, on_selected_files=False):
         self.on_one_template()
 
         utils.write_row_csv(self.headers_for_logs_csv, self.logs_dir, mode="w")
         utils.write_row_csv(self.headers_for_error_csv, self.error_logs_dir, mode="w")
 
-        for file_name in os.listdir(self.path_to_files):
+        if on_selected_files:
+            local_paths = utils.load_pickle('logs/paths_to_work_with.pickle')
+        else:
+            local_paths = os.listdir(self.path_to_files)
+
+        for file_name in local_paths:
             time_start = time.time()
 
             try:

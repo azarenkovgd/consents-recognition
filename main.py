@@ -1,19 +1,30 @@
 from conrec import utils, conrec_class
 
 
-def on_many_files():
+def init():
     parameters = utils.load_json('parameters.json')  # загружает параметры
-
     conrec = conrec_class.ConRec(parameters)
+
+    return conrec
+
+
+def on_folder_files():
+    conrec = init()
+
     conrec.on_multiple_files()
 
 
 def find_values():
-    parameters = utils.load_json('parameters.json')  # загружает параметры
+    conrec = init()
 
-    conrec = conrec_class.ConRec(parameters)
     conrec.find_values()
 
 
+def on_selected_filed():
+    conrec = init()
+
+
+
+
 if __name__ == '__main__':
-    on_many_files()
+    on_folder_files()

@@ -7,3 +7,8 @@ src/
 logs1/
 /test_output.ipynb
 /output.pickle
+/research.ipynb
+/Untitled.ipynb
+/temp/
+/.ipynb_checkpoints/
+.ipynb_checkpoints/
