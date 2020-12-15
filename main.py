@@ -23,8 +23,8 @@ def find_values():
 def on_selected_filed():
     conrec = init()
 
-
+    conrec.on_multiple_files(on_selected_files=True)
 
 
 if __name__ == '__main__':
-    on_folder_files()
+    on_selected_filed()
