@@ -14,5 +14,6 @@
     "sogl_number": 1,
 
     "logs_folder": "logs",
+    "on_selected_files": true,
     "path_to_file_with_paths": "data/cat_1_paths.pickle"
 }
