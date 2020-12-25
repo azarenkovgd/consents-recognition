@@ -30,6 +30,8 @@ class ConRec:
         self.error_logs_dir = f'{self.logs_folder}/errors.csv'
         self.headers_for_error_csv = ['path', 'error_message', 'final_time']
 
+        self.path_to_file_with_paths = parameters['path_to_file_with_paths']
+
         self.logs = []
         self.errors = []
 
@@ -95,7 +97,7 @@ class ConRec:
         utils.write_row_csv(self.headers_for_error_csv, self.error_logs_dir, mode="w")
 
         if on_selected_files:
-            local_paths = utils.load_pickle('logs/paths_to_work_with.pickle')
+            local_paths = utils.load_pickle(self.path_to_file_with_paths)
         else:
             local_paths = os.listdir(self.path_to_files)
 

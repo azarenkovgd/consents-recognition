@@ -11,7 +11,8 @@
 
     "path_to_files": "/files",
     "sogl_folder": "sogl_folder",
-    "sogl_number": 2,
+    "sogl_number": 1,
 
-    "logs_folder": "logs"
+    "logs_folder": "logs",
+    "path_to_file_with_paths": "data/cat_1_paths.pickle"
 }
