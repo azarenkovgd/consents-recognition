@@ -120,7 +120,7 @@ class ConRec:
 
         utils.save_pickle(rel_paths, self.path_to_file_with_paths_for_value_finding)
 
-        max_features = [x * 1500 for x in range(1, 16, 1)]
+        max_features = [x * 1500 for x in range(1, 11, 1)]
         keep_percents = [x / 10 for x in range(1, 11, 1)]
 
         output = {'score': {}, 'fill': {}}
