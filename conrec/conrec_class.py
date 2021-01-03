@@ -32,6 +32,7 @@ class ConRec:
 
         self.on_selected_files = parameters['on_selected_files']
         self.path_to_file_with_paths = parameters['path_to_file_with_paths']
+        self.path_to_file_with_paths_for_value_finding = parameters['path_to_file_with_paths_for_value_finding']
 
         self.logs = []
         self.errors = []
@@ -117,7 +118,7 @@ class ConRec:
         rel_paths = os.listdir(self.path_to_files)
         random.shuffle(rel_paths)
 
-        utils.save_pickle(rel_paths, 'logs/paths_random.pickle')
+        utils.save_pickle(rel_paths, self.path_to_file_with_paths_for_value_finding)
 
         max_features = [x for x in range(1000, 12000, 1000)]
         keep_percents = [x / 10 for x in range(1, 11, 1)]

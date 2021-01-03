@@ -19,4 +19,4 @@ def find_values():
 
 
 if __name__ == '__main__':
-    on_folder_files()
+    find_values()
