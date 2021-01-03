@@ -5,6 +5,8 @@ data/
 logs/
 temp/
 
+parameters.json
+
 */.ipynb_checkpoints/
 *.ipynb
 
