@@ -9,7 +9,7 @@ from conrec import utils, image_class, template_class
 
 class ConRec:
     def __init__(self, parameters):
-        self.path_to_files = parameters['path_to_files']
+        self.path_to_files = parameters['path_to_files']  # Путь на сервере к файлам
 
         self.max_features = parameters['max_features']
         self.keep_percent = parameters['keep_percent']
@@ -18,21 +18,24 @@ class ConRec:
         self.fields_threshold = parameters['fields_threshold']
         self.percent_filled_threshold = parameters['percent_filled_threshold']
 
-        self.debug_mode = parameters['debug_mode']
+        self.debug_mode = parameters['debug_mode']  # Сохранять ли развернутые изображения на диск для оценки
         self.debug_folder = parameters['debug_folder']
 
         self.sogl_folder = parameters['sogl_folder']  # папка с файлами исходных согласий
         self.sogl_number = parameters['sogl_number']  # номер согласия
 
-        self.logs_folder = parameters["logs_folder"]
+        self.logs_folder = parameters["logs_folder"]  # Куда сохранять логи
         self.headers_for_logs_csv = ['path', 'score', 'percent_filled', 'is_correct', 'sha256', 'final_time']
         self.logs_dir = f'{self.logs_folder}/logs.csv'
         self.error_logs_dir = f'{self.logs_folder}/errors.csv'
         self.headers_for_error_csv = ['path', 'error_message', 'final_time']
 
-        self.on_selected_files = parameters['on_selected_files']
+        self.on_selected_files = parameters['on_selected_files']  # Выполнять на всех файлах или только на выбранных
         self.path_to_file_with_paths = parameters['path_to_file_with_paths']
+        # Если есть путь к списку с названиями, он тут
+
         self.path_to_file_with_paths_for_value_finding = parameters['path_to_file_with_paths_for_value_finding']
+        # Путь к списку с названиями файлов для проведения перебора параметров
 
         self.logs = []
         self.errors = []
@@ -41,6 +44,10 @@ class ConRec:
         self.template = None
 
     def check_correctness_image(self):
+        """Проверят изображение на корректность. Функция больше не используется, так как применяется система трех
+        классов
+        """
+
         if (self.image.similarity_score > self.similarity_threshold and
                 self.image.percent_filled > self.percent_filled_threshold and
                 self.image.sha256_image not in self.template.stop_sha256):
@@ -49,6 +56,8 @@ class ConRec:
             self.image.is_correct = False
 
     def on_one_image(self, path_to_image):
+        """Запускает систему на одном изображении, проводя все необходимые операции для получения оценки изображения
+        на корректность"""
         self.image = image_class.Image(self, path_to_image)
 
         self.image.load_image()
@@ -59,12 +68,14 @@ class ConRec:
         self.check_correctness_image()
 
     def on_one_template(self):
+        """Подгружает шаблон и связанные с ним данные"""
         self.template = template_class.Template(self)
 
         self.template.load_template_values()
         self.template.calc_orb()
 
     def one_iteration(self, time_start, file_name):
+        """Функция, созданная для оценки работы модели на втором этапе хакатона. Одна итерация"""
         abs_path_to_image = os.path.join(self.path_to_files, file_name)
 
         self.on_one_image(abs_path_to_image)
@@ -82,6 +93,7 @@ class ConRec:
             cv2.imwrite(os.path.join(self.debug_folder, debug_file_name), self.image.debug_aligned)
 
     def on_error(self, time_start, file_name, exception):
+        """В случае ошибки в выполнении основного цикла"""
         error_data = [file_name, str(exception)]
 
         final_time = round(time.time() - time_start, 3)
@@ -93,6 +105,8 @@ class ConRec:
         utils.write_row_csv(log_data, self.logs_dir)
 
     def on_multiple_files(self):
+        """Функция, созданная для оценки работы модели на втором этапе хакатона. Все итерации. Записывает логи"""
+
         self.on_one_template()
 
         utils.write_row_csv(self.headers_for_logs_csv, self.logs_dir, mode="w")
@@ -113,6 +127,8 @@ class ConRec:
                 self.on_error(time_start, file_name, e)
 
     def find_values(self):
+        """Функция для перебора необходимых значений. Тестирует модель на всех параметрах и сохраняет результат"""
+
         utils.write_row_csv(['path', 'error'], self.error_logs_dir, mode="w")
 
         rel_paths = os.listdir(self.path_to_files)
@@ -156,6 +172,7 @@ class ConRec:
                         output['fill'][pair].append(self.image.percent_filled)
 
                     self.image.cached_matches = None
+                    # обнуляет вычисленные cached_matches, чтобы они были вычислены заново
 
                 utils.save_pickle(output, 'logs/output.pickle')
 

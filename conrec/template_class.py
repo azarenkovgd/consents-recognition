@@ -13,6 +13,7 @@ class Template:
         self.load_template_values()
 
     def load_template_values(self):
+        """Загружает шаблон, предсозданные орб фичи, поля, хэш"""
         sogl_base_str = f'{self.conrec.sogl_folder}/sogl{self.conrec.sogl_number}'
 
         template_image = utils.load_image(sogl_base_str + '_image.jpg')
@@ -22,4 +23,5 @@ class Template:
         self.stop_sha256 = utils.load_json('sogl_folder/sogl3_stop_sha256.json') #sogl_base_str + '_stop_sha256.json')
 
     def calc_orb(self):
+        """Вычисляет орб фичи"""
         self.template_orb_features = orbutils.create_orb_features(self.template_image, self.conrec.max_features)
