@@ -1,0 +1,16 @@
+{
+    "max_number_of_features_to_create": 11000,
+    "percent_of_features_to_keep": 0.9,
+    "similarity_threshold_for_fields": 5000,
+
+    "max_possible_correctness_of_alignment_left": 0.09,
+    "max_number_of_filled_fields_left": 0.1,
+    "max_possible_correctness_of_alignment_right": 0.16,
+    "max_number_of_filled_fields_right": 0.25,
+
+    "debug_mode": 0,
+    "debug_folder": "debug",
+
+    "folder_with_template_data": "template_data",
+    "template_number": 3
+}

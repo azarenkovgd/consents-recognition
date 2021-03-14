@@ -36,6 +36,10 @@ def measure_similarity(aligned: np.ndarray, template: np.ndarray) -> float:
     return max_val
 
 
+def preprocess_part_of_image_to_work(image: np.ndarray, x, y):
+    return cv2.Canny(image[y[1]:y[0], x[1]:x[0]], 3, 100)
+
+
 def check_right_filling(aligned: np.ndarray, template: np.ndarray, fields: list, threshold: float = 5000,
                         debug_mode: int = 0) -> Tuple[float, np.ndarray]:
     """Проверить, сколько в форме заполненных полей.
@@ -48,23 +52,33 @@ def check_right_filling(aligned: np.ndarray, template: np.ndarray, fields: list,
     :return: процент заполненных полей.
     """
 
-    debug_aligned: np.ndarray = aligned.copy()
-    debug_aligned = cv2.cvtColor(debug_aligned, cv2.COLOR_GRAY2BGR)
+    # создание копии изображения для дальнейшего нанесения на него рамок полей
+    debug_aligned_image: np.ndarray = aligned.copy()
+    # изменение цвета изображения обратно из черно белого для удобства дальнейшего изучения
+    debug_aligned_image = cv2.cvtColor(debug_aligned_image, cv2.COLOR_GRAY2BGR)
 
-    num_of_filled = 0
+    num_of_filled_fields = 0
+
+    # стандарт поля - (имя, y координаты рамки, x координаты рамки)
     for field in fields:
         y, x = field[1], field[2]
-        img1 = cv2.Canny(aligned[y[1]:y[0], x[1]:x[0]], 3, 100)
-        img2 = cv2.Canny(template[y[1]:y[0], x[1]:x[0]], 3, 100)
-        mse_score = mse(img1, img2)
 
-        if mse_score > threshold:
-            num_of_filled += 1
+        # вырезание нужной части из присланной пользователем формы и шаблона для дальнейшей оценки
+        img1 = preprocess_part_of_image_to_work(aligned, x, y)
+        img2 = preprocess_part_of_image_to_work(template, x, y)
+
+        mse_score_to_estimate_if_field_is_filled = mse(img1, img2)
+
+        if mse_score_to_estimate_if_field_is_filled > threshold:
+            num_of_filled_fields += 1
 
         if debug_mode == 1:
-            color = ((0, 47, 31) if mse_score > threshold else (0, 0, 255))
-            cv2.rectangle(debug_aligned, (x[0], y[0]), (x[1], y[1]), color, 3)
-            cv2.putText(debug_aligned, str(int(mse_score)), (x[1], y[1]-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+            # выбор цвета для рамки вокруг поля. зеленый если поле заполнено, красный если нет
+            color = ((0, 47, 31) if mse_score_to_estimate_if_field_is_filled > threshold else (0, 0, 255))
 
-    percent_filled = num_of_filled / len(fields)
-    return percent_filled, debug_aligned
+            cv2.rectangle(debug_aligned_image, (x[0], y[0]), (x[1], y[1]), color, 3)
+            cv2.putText(debug_aligned_image, str(int(mse_score_to_estimate_if_field_is_filled)),
+                        (x[1], y[1]-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
+
+    percent_filled = num_of_filled_fields / len(fields)
+    return percent_filled, debug_aligned_image

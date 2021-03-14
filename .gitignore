@@ -5,9 +5,9 @@ data/
 logs/
 temp/
 
-parameters.json
-
 */.ipynb_checkpoints/
 *.ipynb
-
 *-checkpoint.*
+
+output.csv
+/output.pickle

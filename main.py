@@ -1,22 +1,12 @@
-from conrec import utils, conrec_class
+from conrec import utils, manager_class
 
 
-def init():
-    parameters = utils.load_json('parameters.json')  # загружает параметры
-    conrec = conrec_class.ConRec(parameters)
-
-    return conrec
-
-
-def on_folder_files():
-    conrec = init()
-    conrec.on_multiple_files()
-
-
-def find_values():
-    conrec = init()
-    conrec.find_values()
+def main():
+    parameters = utils.load_json('parameters.json')
+    manager = manager_class.Manager(parameters)
+    manager.init_template()
+    type_of_image, description = manager.get_type_of_selected_image('path/to/image.jpg')
 
 
 if __name__ == '__main__':
-    find_values()
+    main()

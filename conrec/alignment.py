@@ -2,10 +2,9 @@ import cv2
 import numpy as np
 
 
-def match_images(matches, image_orb_features: tuple, template_orb_features: tuple, keep_percent: float) -> tuple:
+def match_images(image_orb_features: tuple, template_orb_features: tuple, keep_percent: float) -> tuple:
     """Получить точки для find_homography.
 
-    :param matches: предсозданные параметры
     :param image_orb_features: orb фичи, полученнные из image_to_align с помощью ORB.
     :param template_orb_features: template фичи, полученные из template с помощью ORB.
     :param keep_percent: какой процент лучших фич оставить.
@@ -14,20 +13,19 @@ def match_images(matches, image_orb_features: tuple, template_orb_features: tupl
     (kps1, descs1) = image_orb_features
     (kps2, descs2) = template_orb_features
 
-    if not matches:
-        matcher = cv2.BFMatcher(cv2.NORM_HAMMING2, crossCheck=True)
-        matches = matcher.match(descs1, descs2)
-        matches = sorted(matches, key=lambda x: x.distance)
+    matcher = cv2.BFMatcher(cv2.NORM_HAMMING2, crossCheck=True)
+    matches = matcher.match(descs1, descs2)
+    matches = sorted(matches, key=lambda x: x.distance)
 
-    keep = int(len(matches) * keep_percent)
-    matches = matches[:keep]
+    number_of_matches_to_keep = int(len(matches) * keep_percent)
+    matches = matches[:number_of_matches_to_keep]
 
     pts1 = np.zeros((len(matches), 2), dtype="float")
     pts2 = np.zeros((len(matches), 2), dtype="float")
 
-    for (i, m) in enumerate(matches):
-        pts1[i] = kps1[m.queryIdx].pt
-        pts2[i] = kps2[m.trainIdx].pt
+    for (i, match_point) in enumerate(matches):
+        pts1[i] = kps1[match_point.queryIdx].pt
+        pts2[i] = kps2[match_point.trainIdx].pt
 
     return pts1, pts2
 
@@ -36,7 +34,7 @@ def find_homography(image_to_align: np.ndarray, template: np.ndarray, pts1: np.a
     """Выровнять изображение.
 
     :param image_to_align: изображение для выравнивания.
-    :param template: изображение ориентир.
+    :param template: шаблон формы.
     :param pts1: точки на image_to_align.
     :param pts2: точки на template.
     :return: выравненное изображение.
@@ -44,8 +42,8 @@ def find_homography(image_to_align: np.ndarray, template: np.ndarray, pts1: np.a
 
     (H, mask) = cv2.findHomography(pts1, pts2, method=cv2.RANSAC)
 
-    (h, w) = template.shape[:2]
-    aligned_image = cv2.warpPerspective(image_to_align, H, (w, h))
+    (height, width) = template.shape[:2]
+    aligned_image = cv2.warpPerspective(image_to_align, H, (height, width))
 
     return aligned_image
 
