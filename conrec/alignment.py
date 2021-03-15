@@ -2,6 +2,17 @@ import cv2
 import numpy as np
 
 
+def create_orb_features(image: np.ndarray, max_features: int) -> tuple:
+    """Создать ORB и применить к изображению.
+    :param image: изображение для ORB.
+    :param max_features: количество фич в ORB.
+    :return: фичи, полученные с помощью ORB.
+    """
+    orb = cv2.ORB_create(max_features)
+    image_orb_features = orb.detectAndCompute(image, None)
+    return image_orb_features
+
+
 def match_images(image_orb_features: tuple, template_orb_features: tuple, keep_percent: float) -> tuple:
     """Получить точки для find_homography.
 

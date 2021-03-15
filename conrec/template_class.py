@@ -2,6 +2,7 @@ import image_preprocessing
 import utils
 
 from manager_class import Manager
+import alignment
 
 
 def load_fields(path: str) -> list:
@@ -38,8 +39,8 @@ class Template:
 
     def calc_orb(self):
         """Вычисляет орб фичи"""
-        self.template_orb_features = utils.create_orb_features(self.template_image,
-                                                               self.manager.max_number_of_features_to_create)
+        self.template_orb_features = alignment.create_orb_features(self.template_image,
+                                                                   self.manager.max_number_of_features_to_create)
 
     def update_sha256_stop_list(self):
         """Обновление списка хэшей для определения, была ли форма уже отправлена или нет"""

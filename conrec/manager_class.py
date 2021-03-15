@@ -1,7 +1,3 @@
-import os
-
-import cv2
-
 import image_class
 import template_class
 
@@ -10,7 +6,7 @@ class Manager:
     def __init__(self, parameters):
         self.max_number_of_features_to_create = parameters['max_number_of_features_to_create']
         self.percent_of_features_to_keep = parameters['percent_of_features_to_keep']
-        self.similarity_threshold_for_fields = parameters['similarity_threshold_for_fields']
+        self.threshold_of_filling_for_fields = parameters['threshold_of_filling_for_fields']
 
         self.max_possible_correctness_of_alignment_left = parameters['max_possible_correctness_of_alignment_left']
         self.max_number_of_filled_fields_left = parameters['max_number_of_filled_fields_left']
@@ -53,7 +49,7 @@ class Manager:
         self.image.align_image()
         self.image.evaluate_aligned_image()
 
-    def get_type_of_sent_image(self):
+    def classify_image_if_checks_passed(self):
         """Определение типа присланного изображения по предварительно вычисленным параметрам"""
         if (self.image.similarity_score < self.max_possible_correctness_of_alignment_left and
                 self.image.percent_filled < self.max_number_of_filled_fields_left):
@@ -65,7 +61,7 @@ class Manager:
 
         return 2
 
-    def get_type_of_selected_image(self, path_to_image: str) -> (int, str):
+    def get_type_of_image(self, path_to_image: str) -> (int, str):
         """Определение типа присланного изображения по предварительно вычисленным параметрам
 
         :param path_to_image: абсолютный или относительный путь к изображению.
@@ -79,7 +75,7 @@ class Manager:
                 return 4, f"Изображение уже было встречено {number_of_matching_hashes} раз"
 
             self.main_calculations_for_sent_image()
-            type_of_sent_image = self.get_type_of_sent_image()
+            type_of_sent_image = self.classify_image_if_checks_passed()
 
             return type_of_sent_image, f"Изображение было отнесено к типу {type_of_sent_image}." \
                                        f"Система дает оценку {self.image.similarity_score} " \

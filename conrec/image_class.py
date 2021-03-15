@@ -5,7 +5,6 @@ import cv2
 import imutils
 import alignment
 import recognition
-import utils
 import image_preprocessing
 from manager_class import Manager
 
@@ -44,8 +43,8 @@ class Image:
 
     def create_orb_for_image(self):
         """Генерирует орб фичи"""
-        self.image_orb_features = utils.create_orb_features(self.image_to_align,
-                                                            self.manager.max_number_of_features_to_create)
+        self.image_orb_features = alignment.create_orb_features(self.image_to_align,
+                                                                self.manager.max_number_of_features_to_create)
 
     def align_image(self):
         """Выравнивает изображение согласно шаблону"""
@@ -58,7 +57,7 @@ class Image:
         self.similarity_score = recognition.measure_similarity(self.aligned_image, self.template_image)
         values_to_unpack = recognition.check_right_filling(self.aligned_image, self.template_image,
                                                            self.template_class.fields,
-                                                           self.manager.similarity_threshold_for_fields,
+                                                           self.manager.threshold_of_filling_for_fields,
                                                            self.manager.debug_mode)
         self.percent_filled, self.debug_aligned = values_to_unpack
 
