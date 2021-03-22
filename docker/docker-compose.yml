@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  main:
+    build: .
+    volumes: [
+        ../src:/conrec/src,
+        ../template_data:/conrec/template_data,
+        ../docker:/conrec/docker,
+        ../temp:/conrec/files,
+        ../debug:/conrec/debug
+    ]

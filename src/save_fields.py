@@ -56,7 +56,7 @@ def extract_frames(contours_of_frames: np.ndarray) -> list:
         if area > 250:
             frames.append(box[[1, 3]])
 
-    return frames
+    return np.array(frames).tolist()
 
 
 def save_frames(path_to_image_with_fields: str,

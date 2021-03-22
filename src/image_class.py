@@ -6,11 +6,11 @@ import imutils
 import alignment
 import recognition
 import image_preprocessing
-from manager_class import Manager
+import manager_class
 
 
 class Image:
-    def __init__(self, manager: 'Manager'):
+    def __init__(self, manager: 'manager_class.Manager'):
         self.path_to_image = None
 
         self.image_to_align = None
@@ -48,9 +48,11 @@ class Image:
 
     def align_image(self):
         """Выравнивает изображение согласно шаблону"""
-        pts1, pts2 = alignment.match_images(self.manager.percent_of_features_to_keep,
-                                            self.image_orb_features, self.template_class.template_orb_features)
+        pts1, pts2 = alignment.match_images(self.image_orb_features, self.template_class.template_orb_features,
+                                            self.manager.percent_of_features_to_keep)
+        cv2.imwrite(f'../debug/t20.jpg', self.image_to_align)
         self.aligned_image = alignment.find_homography(self.image_to_align, self.template_image, pts1, pts2)
+        cv2.imwrite(f'../debug/t21.jpg', self.aligned_image)
 
     def evaluate_aligned_image(self):
         """Оценивает выравненное изображение"""
@@ -70,3 +72,5 @@ class Image:
 
             path = os.path.join(self.manager.debug_folder, debug_file_name)
             cv2.imwrite(path, self.debug_aligned)
+
+            print('saved debug_image')

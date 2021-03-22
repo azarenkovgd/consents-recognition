@@ -12,4 +12,6 @@ temp/
 output.csv
 /output.pickle
 
+debug
+
 venv

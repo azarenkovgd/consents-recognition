@@ -1,7 +1,7 @@
 import image_preprocessing
 import utils
 
-from manager_class import Manager
+import manager_class
 import alignment
 
 
@@ -17,7 +17,7 @@ def load_fields(path: str) -> list:
 
 
 class Template:
-    def __init__(self, manager: Manager):
+    def __init__(self, manager: 'manager_class.Manager'):
         self.manager = manager
 
         self.template_image = None

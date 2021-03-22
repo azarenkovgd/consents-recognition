@@ -51,9 +51,9 @@ def check_right_filling(aligned: np.ndarray, template: np.ndarray, fields: list,
                     заполненные поля соответственно.
     :return: процент заполненных полей.
     """
-
     # создание копии изображения для дальнейшего нанесения на него рамок полей
     debug_aligned_image: np.ndarray = aligned.copy()
+
     # изменение цвета изображения обратно из черно белого для удобства дальнейшего изучения
     debug_aligned_image = cv2.cvtColor(debug_aligned_image, cv2.COLOR_GRAY2BGR)
 

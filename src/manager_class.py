@@ -16,7 +16,8 @@ class Manager:
         self.debug_mode = parameters['debug_mode']  # сохранять ли развернутые изображения на диск для оценки
         self.debug_folder = parameters['debug_folder']  # куда сохранять их
 
-        self.folder_with_template_data = parameters['template_data']  # папка с файлами шаблонов и данными для них
+        # папка с файлами шаблонов и данными для них
+        self.folder_with_template_data = parameters['folder_with_template_data']
         self.template_number = parameters['template_number']  # номер согласия
 
         self.image = None
@@ -76,6 +77,7 @@ class Manager:
 
             self.main_calculations_for_sent_image()
             type_of_sent_image = self.classify_image_if_checks_passed()
+            self.image.save_debug_image_if_needed()
 
             return type_of_sent_image, f"Изображение было отнесено к типу {type_of_sent_image}." \
                                        f"Система дает оценку {self.image.similarity_score} " \
