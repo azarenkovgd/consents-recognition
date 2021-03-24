@@ -57,4 +57,3 @@ def find_homography(image_to_align: np.ndarray, template: np.ndarray, pts1: np.a
     aligned_image = cv2.warpPerspective(image_to_align, H, (height, width))
 
     return aligned_image
-

@@ -10,4 +10,4 @@ RUN conda env create -f enviroment.yml
 
 WORKDIR /conrec/src
 
-ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "mainenv", "python3", "example.py"]
+CMD ["conda", "run", "--no-capture-output", "-n", "mainenv", "python3", "example.py"]

@@ -50,9 +50,7 @@ class Image:
         """Выравнивает изображение согласно шаблону"""
         pts1, pts2 = alignment.match_images(self.image_orb_features, self.template_class.template_orb_features,
                                             self.manager.percent_of_features_to_keep)
-        cv2.imwrite(f'../debug/t20.jpg', self.image_to_align)
         self.aligned_image = alignment.find_homography(self.image_to_align, self.template_image, pts1, pts2)
-        cv2.imwrite(f'../debug/t21.jpg', self.aligned_image)
 
     def evaluate_aligned_image(self):
         """Оценивает выравненное изображение"""
