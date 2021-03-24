@@ -70,5 +70,3 @@ class Image:
 
             path = os.path.join(self.manager.debug_folder, debug_file_name)
             cv2.imwrite(path, self.debug_aligned)
-
-            print('saved debug_image')
