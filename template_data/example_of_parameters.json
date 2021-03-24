@@ -1,5 +1,5 @@
 {
-    "max_number_of_features_to_create": 20000,
+    "max_number_of_features_to_create": 13000,
     "percent_of_features_to_keep": 1,
     "threshold_of_filling_for_fields": 5000,
 
@@ -12,5 +12,5 @@
     "debug_folder": "../debug",
 
     "folder_with_template_data": "../template_data",
-    "template_number": 1
+    "template_number": 3
 }
